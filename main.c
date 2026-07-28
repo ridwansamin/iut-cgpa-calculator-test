@@ -1,22 +1,32 @@
 #include <stdio.h>
-#include "gpa.h"
+#include "course.h"
+#include "courseResult.h"
+#include "student.h"
 
 int main()
 {
-    double current_cgpa, completed_credits, expected_gpa, future_credits;
+    Course cse4107 = createCourse("CSE 4107", "Structured Programming I", 3.0, 1);
+    Course cse4108 = createCourse("CSE 4108", "Structured Programming I Lab", 1.5, 1);
 
-    printf("Current CGPA: ");
-    scanf("%lf", &current_cgpa);
-    printf("Completed credits: ");
-    scanf("%lf", &completed_credits);
-    printf("Expected future GPA: ");
-    scanf("%lf", &expected_gpa);
-    printf("Future credits: ");
-    scanf("%lf", &future_credits);
+    Student students[3] = {
+        createStudent("240041001", "Alice"),
+        createStudent("240041002", "Bob"),
+        createStudent("240041003", "Carol")
+    };
 
-    printf("Expected CGPA: %.2f\n",
-           calculateExpectedCGPA(current_cgpa, completed_credits,
-                                 expected_gpa, future_credits));
+    addCourseResultToStudent(&students[0], createCompletedCourseResult(&cse4107, 252));
+    addCourseResultToStudent(&students[0], createCompletedCourseResult(&cse4108, 135));
+    addCourseResultToStudent(&students[1], createCompletedCourseResult(&cse4107, 228));
+    addCourseResultToStudent(&students[1], createCompletedCourseResult(&cse4108, 123));
+    addCourseResultToStudent(&students[2], createCompletedCourseResult(&cse4107, 273));
+    addCourseResultToStudent(&students[2], createCompletedCourseResult(&cse4108, 130.5));
+
+    sortStudentsByCGPA(students, 3);
+    for (int i = 0; i < 3; i++)
+    {
+        printf("%d. ", i + 1);
+        viewStudent(students[i]);
+    }
 
     return 0;
 }
