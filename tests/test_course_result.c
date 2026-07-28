@@ -5,15 +5,29 @@
 int testCompletedResult()
 {
     Course course = createCourse("CSE 4202", "Structured Programming II Lab", 1.5, 2);
-    CourseResult result = createCourseResult(&course, 120);
-    return result.course == &course;
+    CourseResult result = createCompletedCourseResult(&course, 120);
+    return result.completed == 1;
 }
 
 int testCompletedMarks()
 {
     Course course = createCourse("CSE 4202", "Structured Programming II Lab", 1.5, 2);
-    CourseResult result = createCourseResult(&course, 120);
+    CourseResult result = createCompletedCourseResult(&course, 120);
     return result.marks == 120;
+}
+
+int testIncompleteMarks()
+{
+    Course course = createCourse("CSE 4202", "Structured Programming II Lab", 1.5, 2);
+    CourseResult incomplete = createIncompleteCourseResult(&course);
+    return incomplete.marks == 0.0;
+}
+
+int testIncompleteResult()
+{
+    Course course = createCourse("CSE 4202", "Structured Programming II Lab", 1.5, 2);
+    CourseResult incomplete = createIncompleteCourseResult(&course);
+    return incomplete.completed == 0;
 }
 
 int testSortBySemester()
@@ -24,9 +38,9 @@ int testSortBySemester()
         createCourse("CSE 4108", "Structured Programming I Lab", 1.5, 1)
     };
     CourseResult results[3] = {
-        createCourseResult(&courses[0], 210),
-        createCourseResult(&courses[1], 240),
-        createCourseResult(&courses[2], 105)
+        createCompletedCourseResult(&courses[0], 210),
+        createCompletedCourseResult(&courses[1], 240),
+        createCompletedCourseResult(&courses[2], 105)
     };
 
     sortCourseResultsBySemester(results, 3);
@@ -42,9 +56,9 @@ int testFilterBySemester()
         createCourse("CSE 4203", "Discrete Mathematics", 3.0, 2)
     };
     CourseResult results[3] = {
-        createCourseResult(&courses[0], 240),
-        createCourseResult(&courses[1], 105),
-        createCourseResult(&courses[2], 210)
+        createCompletedCourseResult(&courses[0], 240),
+        createCompletedCourseResult(&courses[1], 105),
+        createIncompleteCourseResult(&courses[2])
     };
     CourseResult filtered[4];
 
@@ -63,6 +77,10 @@ int main()
     if (testCompletedResult()) passed++;
     total++;
     if (testCompletedMarks()) passed++;
+    total++;
+    if (testIncompleteMarks()) passed++;
+    total++;
+    if (testIncompleteResult()) passed++;
     total++;
     if (testSortBySemester()) passed++;
     total++;
